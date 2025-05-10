@@ -1,0 +1,40 @@
+module GameServer {
+    interface GameServerInterface {
+        // Authentication methods
+        string authenticate(in string username, in string password);
+        void logout(in string username);
+        boolean verifyCredentials(in string username, in string password);
+        string generateUniqueToken();
+        string validateToken(in string token);
+
+        // Game management methods
+        string createGame(in string token);
+        boolean joinGame(in string token, in string gameId);
+        void cancelGame(in string token, in string gameId);
+
+        // Game play methods
+        boolean submitGuess(in string token, in string gameId, in char letter);
+        string getGameStatus(in string token, in string gameId);
+
+        // Leaderboard methods
+        string getLeaderboard();
+
+        // Admin methods
+        boolean addPlayer(in string token, in string username, in string password);
+        boolean removePlayer(in string token, in string username);
+        boolean updatePlayer(in string token, in string username, in string newPassword);
+        string searchPlayer(in string token, in string searchTerm);
+        boolean setWaitingTime(in string token, in long seconds);
+        boolean setRoundDuration(in string token, in long seconds);
+
+        // Exception for when player is already logged in
+        exception AlreadyLoggedInException {
+            string message;
+        };
+
+        // Exception for when game is full or not found
+        exception GameException {
+            string message;
+        };
+    };
+};

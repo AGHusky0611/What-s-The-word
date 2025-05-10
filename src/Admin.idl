@@ -1,0 +1,55 @@
+module Admin {
+  // Exceptions for admin operations
+  exception AuthenticationError { string reason; };
+  exception NotFoundError      { string reason; };
+  exception ValidationError    { string reason; };
+  exception GameError          { string reason; };
+
+  // Structures for credentials and user details
+  struct UserCredentials {
+    string username;
+    string password;
+  };
+
+  struct UserInfo {
+    string username;
+    boolean isAdmin;
+  };
+
+  // User registration and login interface
+  interface UserManager {
+    string registerUser(in UserCredentials creds)
+      raises (ValidationError);
+    string login(in UserCredentials creds)
+      raises (AuthenticationError);
+    string logout(in string token)
+      raises (AuthenticationError);
+    UserInfo getUserInfo(in string token)
+      raises (AuthenticationError);
+  };
+
+  // Administrative tasks for user and game session management
+  interface AdminOperations {
+    string deleteUser(in string adminToken, in string username)
+      raises (AuthenticationError, NotFoundError, ValidationError);
+    string getAllUsers(in string adminToken)
+      raises (AuthenticationError);
+    string endGameSession(in string adminToken, in string sessionId)
+      raises (AuthenticationError, NotFoundError, GameError);
+    string setWaitingTime(in string adminToken, in long seconds)
+      raises (AuthenticationError, ValidationError);
+    string setRoundDuration(in string adminToken, in long seconds)
+      raises (AuthenticationError, ValidationError);
+
+
+   // Player management
+    boolean createPlayer(in string username, in string password, in boolean isAdmin);
+    boolean deletePlayer(in string username);
+
+    // Game configuration
+    void setWaitTime(in long seconds);
+
+    // Player search
+    string searchPlayers(in string searchTerm);
+  };
+};
