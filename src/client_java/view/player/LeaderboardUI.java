@@ -1,34 +1,25 @@
 package client_java.view.player;
 
-import client_java.controller.player.LeaderboardController;
-import client_java.model.player.LeaderboardModel;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-// LEADERBOARD
-
 public class LeaderboardUI extends JFrame {
-
-    JPanel transparentPanel;
-    JButton backButton;
+    private JPanel transparentPanel;
+    private JButton backButton;
 
     public LeaderboardUI() {
-        LeaderboardModel model = new LeaderboardModel();
-//        LeaderboardController controller = new LeaderboardController(this, model);
-
-        // set frame
+        // Frame setup
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setIconImage(new ImageIcon("src/client_java/res/logo/Hangman_Logo.jpg").getImage());
+        setIconImage(new ImageIcon("res/logo/Hangman_Logo.jpg").getImage());
         setTitle("What's The Word?");
         setSize(1000, 700);
         setLayout(null);
         setLocationRelativeTo(null);
         setResizable(false);
 
-        // background of the frame
-        ImageIcon backgroundIcon = new ImageIcon("src/client_java/res/images/background.png");
+        // Background panel
+        ImageIcon backgroundIcon = new ImageIcon("res/images/background.png");
         Image backgroundImage = backgroundIcon.getImage();
 
         JPanel panel = new JPanel() {
@@ -40,7 +31,7 @@ public class LeaderboardUI extends JFrame {
         };
         panel.setLayout(null);
 
-        // back button
+        // Back button
         backButton = new JButton("<");
         backButton.setBounds(30, 30, 60, 30);
         backButton.setFont(new Font("Arial", Font.PLAIN, 30));
@@ -48,15 +39,14 @@ public class LeaderboardUI extends JFrame {
         backButton.setBorderPainted(false);
         backButton.setContentAreaFilled(false);
         backButton.setForeground(Color.white);
-//        controller.getBackButtonAction();
 
-        // "leaderboard" label
+        // Leaderboard label
         JLabel leaderboardLabel = new JLabel("LEADERBOARD");
         leaderboardLabel.setBounds(405, 120, 200, 40);
         leaderboardLabel.setFont(new Font("Segoe UI", Font.PLAIN, 25));
         leaderboardLabel.setForeground(Color.white);
 
-        transparentPanel = new JPanel();
+        // Transparent panel for leaderboard content
         transparentPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -71,17 +61,28 @@ public class LeaderboardUI extends JFrame {
         transparentPanel.setBounds(170, 170, 640, 300);
         transparentPanel.setOpaque(false);
 
+        // Add components to panel
         panel.add(backButton);
         panel.add(leaderboardLabel);
         panel.add(transparentPanel);
         setContentPane(panel);
-        setVisible(true);
 
-        // to not immediately focus on any elements in the frame
+        // To not immediately focus on any elements in the frame
         SwingUtilities.invokeLater(() -> getContentPane().requestFocusInWindow());
     }
 
-    // leaderboard rows
+    // Methods to add rows to the leaderboard
+    public void setLeaderBoardRanking(List<String> players, List<Integer> wins) {
+        transparentPanel.removeAll();
+
+        for (int i = 0; i < players.size(); i++) {
+            addRow(transparentPanel, String.valueOf(i + 1), players.get(i), "Wins: " + wins.get(i));
+        }
+
+        transparentPanel.revalidate();
+        transparentPanel.repaint();
+    }
+
     private void addRow(JPanel contentPanel, String rank, String player, String wins) {
         JPanel row = new JPanel();
         row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
@@ -123,28 +124,18 @@ public class LeaderboardUI extends JFrame {
         row.add(winsLabel);
 
         contentPanel.add(row);
-        contentPanel.revalidate();
-        contentPanel.repaint();
     }
 
-    public void setLeaderBoardRanking(List<String> players, List<Integer> wins) {
-        transparentPanel.removeAll();
-
-        int[] ranks = {1, 2, 3, 4, 5};
-        for (int i = 0; i <= ranks.length; i++) {
-            addRow(transparentPanel, String.valueOf(ranks[i]), players.get(i), "Wins: " + wins.get(i));
-        }
-
-        transparentPanel.revalidate();
-        transparentPanel.repaint();
-    }
-
+    // Getters
     public JButton getBackButton() {
         return backButton;
     }
 
-    // temporary
-    public static void main(String[] args) {
-        new LeaderboardUI();
+    public void showUI() {
+        setVisible(true);
+    }
+
+    public void hideUI() {
+        setVisible(false);
     }
 }

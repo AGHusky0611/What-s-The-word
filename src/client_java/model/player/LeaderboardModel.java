@@ -4,26 +4,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LeaderboardModel {
-//    private List<String> players;
-//    private List<Integer> wins;
-//
-//    public LeaderboardModel() {
-//        players = new ArrayList<>();
-//        wins = new ArrayList<>();
-//    }
-//
-//    public List<String> getPlayers() {
-//        return new ArrayList<>(players);
-//    }
-//
-//    public List<Integer> getWins() {
-//        return new ArrayList<>(wins);
-//    }
-//
-//    public void setLeaderboardRanking(List<String> players, List<Integer> wins) {
-//        this.players = players;
-//        this.wins = wins;
-//    }
-}
+    private List<String> topPlayers;
+    private List<Integer> topWins;
 
-// SERVER: make a ranking method with the most wins ranking 1 to 5
+    public LeaderboardModel() {
+        topPlayers = new ArrayList<>();
+        topWins = new ArrayList<>();
+    }
+
+    public void fetchLeaderboardData() {
+        //todo - get the data
+        // Clear current data
+        topPlayers.clear();
+        topWins.clear();
+
+        // Mock data - replace with actual server call
+        topPlayers.add("Player1");
+        topPlayers.add("Player2");
+        topPlayers.add("Player3");
+        topPlayers.add("Player4");
+        topPlayers.add("Player5");
+
+        topWins.add(15);
+        topWins.add(12);
+        topWins.add(10);
+        topWins.add(8);
+        topWins.add(5);
+    }
+
+    public List<String> getTopPlayers() {
+        return new ArrayList<>(topPlayers);
+    }
+
+    public List<Integer> getTopWins() {
+        return new ArrayList<>(topWins);
+    }
+
+    // This would be called when we have real server connection
+    public void updateFromServer(List<String> players, List<Integer> wins) {
+        topPlayers = new ArrayList<>(players);
+        topWins = new ArrayList<>(wins);
+    }
+}

@@ -1,0 +1,116 @@
+#include "CommonInterface.idl"
+#include "Exceptions.idl"
+
+module Server {
+    module PlayerSide {
+        typedef sequence<CommonObjects::GameResult> GameHistory;
+        typedef sequence<CommonObjects::LobbyInfo> LobbyList;
+
+        interface GameSession {
+            // Game management
+            void startGame()
+                raises(Exceptions::LostConnectionException,
+                       Exceptions::NotLoggedInException,
+                       Exceptions::NotEnoughPlayersException);
+
+            void endGame()
+                raises(Exceptions::SessionNotFoundException,
+                       Exceptions::LostConnectionException,
+                       Exceptions::NotLoggedInException);
+
+            // Gameplay
+            void guess(in string guessingPlayer, in char letter)
+                raises(Exceptions::NotYourTurnException,
+                       Exceptions::WrongGuessException,
+                       Exceptions::LostConnectionException,
+                       Exceptions::NotLoggedInException);
+
+            string getCurrentWordState()
+                raises(Exceptions::LostConnectionException,
+                       Exceptions::NotLoggedInException);
+
+            string selectWord()
+                raises(Exceptions::LostConnectionException,
+                       Exceptions::NotLoggedInException);
+
+            // Player management
+            void addPlayer(in CommonObjects::User user)
+                raises(Exceptions::SessionFullException,
+                       Exceptions::PlayerAlreadyInSessionException,
+                       Exceptions::UserIsBannedException,
+                       Exceptions::LostConnectionException);
+
+            void removePlayer(in string playerId)
+                raises(Exceptions::NoSuchUserFoundException,
+                       Exceptions::LostConnectionException);
+
+            // Status
+            string ping(in CommonObjects::User user)
+                raises(Exceptions::LostConnectionException,
+                       Exceptions::NoSuchUserFoundException);
+        };
+
+        interface PlayerInterface {
+            // Authentication
+            string login(in CommonInterface::CallBackInterface cb,
+                        in string username,
+                        in string password)
+                raises(Exceptions::LostConnectionException,
+                       Exceptions::AlreadyLoggedInException,
+                       Exceptions::UserIsBannedException);
+
+            void logout(in string userId)
+                raises(Exceptions::LostConnectionException,
+                       Exceptions::NotLoggedInException);
+
+            // Lobby management
+            GameSession createLobby(in CommonObjects::User host,
+                                   in string lobbyName,
+                                   in CommonObjects::GameRules rules)
+                raises(Exceptions::LostConnectionException,
+                       Exceptions::NotLoggedInException,
+                       Exceptions::SessionAlreadyMadeException);
+
+            GameSession joinLobby(in string lobbyId,
+                                in CommonObjects::User player)
+                raises(Exceptions::LostConnectionException,
+                       Exceptions::SessionNotFoundException,
+                       Exceptions::SessionFullException,
+                       Exceptions::PlayerAlreadyInSessionException,
+                       Exceptions::UserIsBannedException,
+                       Exceptions::NotLoggedInException);
+
+            GameSession randomConnect(in CommonObjects::User user)
+                raises(Exceptions::LostConnectionException,
+                       Exceptions::NoSessionsFoundException,
+                       Exceptions::SessionFullException,
+                       Exceptions::PlayerAlreadyInSessionException,
+                       Exceptions::NotLoggedInException);
+
+            void disconnect(in string sessionId, in string playerId)
+                raises(Exceptions::LostConnectionException,
+                       Exceptions::SessionNotFoundException,
+                       Exceptions::NotLoggedInException);
+
+            LobbyList getAvailableLobbies()
+                raises(Exceptions::LostConnectionException,
+                       Exceptions::NoSessionsFoundException);
+
+            // Game stats
+            string getWinRatio(in string playerId)
+                raises(Exceptions::LostConnectionException,
+                       Exceptions::NoSuchUserFoundException,
+                       Exceptions::NotLoggedInException);
+
+            GameHistory getGameHistory(in string playerId)
+                raises(Exceptions::LostConnectionException,
+                       Exceptions::NotLoggedInException,
+                       Exceptions::NoSuchUserFoundException);
+
+            // Connection
+            string ping(in string userId)
+                raises(Exceptions::LostConnectionException,
+                       Exceptions::NotLoggedInException);
+        };
+    };
+};

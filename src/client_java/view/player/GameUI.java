@@ -22,14 +22,14 @@ public class GameUI extends JFrame {
     public GameUI() {
         // set up frame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // temporary
-        setIconImage(new ImageIcon("src/client_java/res/logo/Hangman_Logo.jpg").getImage());
+        setIconImage(new ImageIcon("res/logo/Hangman_Logo.jpg").getImage());
         setTitle("What's The Word?");
         setSize(2000, 1000);
         setLayout(null);
         setLocationRelativeTo(null);
         setResizable(false);
 
-        ImageIcon backgroundIcon = new ImageIcon("src/client_java/res/images/background.png");
+        ImageIcon backgroundIcon = new ImageIcon("res/images/background.png");
         Image backgroundImage = backgroundIcon.getImage();
 
         JPanel panel = new JPanel() {

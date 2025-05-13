@@ -1,5 +1,7 @@
 package client_java.view.player;
 
+import client_java.controller.player.LeaderboardController;
+import client_java.model.player.LeaderboardModel;
 import client_java.view.login.Login;
 
 import javax.swing.*;
@@ -12,18 +14,19 @@ import java.awt.event.ActionListener;
 
 public class HomeScreenUI extends JFrame {
 
-    String username = "Abrelle"; // placeholder
-    JPanel transparentPanel;
+    private String username = "Null"; // placeholder
+    private final JPanel transparentPanel;
     private DefaultListModel<String> playerListModel; // placeholder
     private JLabel countdownLabel;
     private Timer countdownTimer;
     private int countdown = 10;
-    JButton logoutButton;
+    private final JButton logoutButton;
 
-    public HomeScreenUI(String authToken, String validatedUsername) {
+    public HomeScreenUI() {
         // set frame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // temporary
-        setIconImage(new ImageIcon("Client_Java/src/main/res/logo/Hangman_Logo.jpg").getImage());
+        setIconImage(new ImageIcon("res/logo/Hangman_Logo.jpg").getImage());
+
         setTitle("What's The Word?");
         setSize(1000, 700);
         setLayout(null);
@@ -31,7 +34,7 @@ public class HomeScreenUI extends JFrame {
         setResizable(false);
 
         // background of the frame
-        ImageIcon backgroundIcon = new ImageIcon("Client_Java/src/main/res/images/background.png");
+        ImageIcon backgroundIcon = new ImageIcon("res/images/background.png");
         Image backgroundImage = backgroundIcon.getImage();
 
         JPanel panel = new JPanel() {
@@ -117,8 +120,12 @@ public class HomeScreenUI extends JFrame {
         viewLeaderboardButton.setFocusPainted(false);
         viewLeaderboardButton.setFont(new Font("Segoe UI", Font.PLAIN, 22));
         viewLeaderboardButton.addActionListener(e -> {
-            new LeaderboardUI();
             dispose();
+            LeaderboardUI leaderboardUI = new  LeaderboardUI();
+            LeaderboardModel leaderboardModel = new LeaderboardModel();
+            LeaderboardController leaderboardController = new LeaderboardController(leaderboardUI,leaderboardModel);
+            leaderboardUI.setVisible(true);
+
         });
 
         // create lobby button
@@ -447,18 +454,7 @@ public class HomeScreenUI extends JFrame {
         return logoutButton;
     }
 
-    // search lobby
-    // view leaderboard button
-    // join a lobby row
-    // create lobby button
-    // enter a name field
-    // cancel button
-    // yes button
-    // start button
-    // leave button
+    public static void main(String[] args) {
+        HomeScreenUI run = new HomeScreenUI();
+    }
 }
-
-// clicking row to join lobby - function and UI - not yet created
-// "no other player joined" - joption - not yet created
-// "lobby does not exist" - joption - not yet created
-// "game is still ongoing return to game" - joption - not yet created

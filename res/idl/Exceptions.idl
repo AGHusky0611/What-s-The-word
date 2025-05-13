@@ -1,0 +1,58 @@
+module Server {
+    module Exceptions {
+        // General exceptions
+        exception LostConnectionException {
+            string message;
+        };
+
+        exception NotLoggedInException {
+            string message;
+        };
+
+        exception AlreadyLoggedInException {
+            string message;
+        };
+
+        exception UserIsBannedException {
+            string message;
+        };
+
+        exception NoSuchUserFoundException {
+            string message;
+        };
+
+        // Lobby/game session exceptions
+        exception SessionAlreadyMadeException {
+            string message;
+        };
+
+        exception SessionNotFoundException {
+            string message;
+        };
+
+        exception SessionFullException {
+            string message;
+        };
+
+        exception NoSessionsFoundException {
+            string message;
+        };
+
+        exception PlayerAlreadyInSessionException {
+            string message;
+        };
+
+        exception NotEnoughPlayersException {
+            string message;
+        };
+
+        // Gameplay exceptions
+        exception NotYourTurnException {
+            string message;
+        };
+
+        exception WrongGuessException {
+            string message;
+        };
+    };
+};

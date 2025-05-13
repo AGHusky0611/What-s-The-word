@@ -1,7 +1,5 @@
 package client_java.view.login;
 
-import client_java.controller.login.LoginController;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -22,7 +20,7 @@ public class Login extends JFrame {
 
     private void setupFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setIconImage(new ImageIcon("src/client_java/res/logo/Hangman_Logo.jpg").getImage());
+        setIconImage(new ImageIcon("res/logo/Hangman_Logo.jpg").getImage());
         setTitle("What's The Word?");
         setSize(1000, 700);
         setLayout(null);
@@ -31,7 +29,7 @@ public class Login extends JFrame {
     }
 
     private void setupBackground() {
-        ImageIcon backgroundIcon = new ImageIcon("src/client_java/res/images/loginBackground.png");
+        ImageIcon backgroundIcon = new ImageIcon("res/images/loginBackground.png");
         Image backgroundImage = backgroundIcon.getImage();
 
         JPanel panel = new JPanel() {
@@ -191,13 +189,10 @@ public class Login extends JFrame {
 
     // Getters
     public String getUsername() {
-        System.out.println("passing username " + usernameField.getText());
         return usernameField.getText();
-
     }
 
     public char[] getPassword() {
-        System.out.println("passing password " + passField.getText());
         return passField.getPassword();
     }
 
@@ -208,9 +203,7 @@ public class Login extends JFrame {
     // Main method
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            Login loginView = new Login();
-            new LoginController(loginView);
-            loginView.setVisible(true);
+            new Login();
         });
     }
 }
